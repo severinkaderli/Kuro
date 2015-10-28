@@ -1,0 +1,12 @@
+{
+    "name": "severinkaderli/kuro",
+    "description": "PHP-Framework",
+    "license": "MIT License",
+    "authors": [
+        {
+            "name": "Severin Kaderli",
+            "email": "severin.kaderli@gmail.com"
+        }
+    ],
+    "require": {}
+}

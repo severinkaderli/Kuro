@@ -16,6 +16,10 @@ class TestController
     public function index() {
         return "index";
     }
+
+    public function delete($id) {
+        return 'delete';
+    }
 }
 
 //TODO: Refactor this somehow...
@@ -49,6 +53,7 @@ $router->route("GET", "/controller/edit", "TestController@edit");
 
 //Routing using extra paramter
 $router->route("GET", "/controller/{id}", "TestController@show");
+$router->route("GET", "/controller/{id}/delete", "TestController@delete");
 
 $router->match();
 

@@ -104,7 +104,7 @@ class Router
             $routePattern = "/^" . $routePattern . "$/";
 
             $routeParameter = [];
-            if(preg_match($routePattern, $requestUrl, $routeParameter) === 1) {
+            if (preg_match($routePattern, $requestUrl, $routeParameter) === 1) {
                 $matchRoute = true;
             }
 
@@ -117,7 +117,7 @@ class Router
                 }
 
                 //If it's a string try to call the controller
-                if(is_string($route["callback"])) {
+                if (is_string($route["callback"])) {
 
                     $controllerInformation = explode("@", $route["callback"]);
 
@@ -125,12 +125,11 @@ class Router
                     $controller = new $controllerInformation[0];
 
                     //Try to call the controller method
-                    if(isset($routeParameter["parameter"])) {
-                        echo $controller ->$controllerInformation[1]($routeParameter["parameter"]);
+                    if (isset($routeParameter["parameter"])) {
+                        echo $controller->$controllerInformation[1]($routeParameter["parameter"]);
                     } else {
-                        echo $controller ->$controllerInformation[1]();
+                        echo $controller->$controllerInformation[1]();
                     }
-
 
                     break;
                 }
