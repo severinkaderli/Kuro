@@ -3,9 +3,10 @@
 namespace Kuro\Routing;
 
 use Closure;
-use Kuro\Routing\Exception\MethodNotAllowedException;
-use Kuro\Routing\Exception\IllegalCallbackException;
 use Kuro\Exception\ClassNotFoundException;
+use Kuro\Exception\MethodNotFoundException;
+use Kuro\Routing\Exception\IllegalCallbackException;
+use Kuro\Routing\Exception\MethodNotAllowedException;
 
 
 /**
@@ -83,11 +84,8 @@ class Router
     }
 
     /**
-     * This method checks if the current request has a corresponding
-     * route defined. If a route is defined the correct callback function
-     * is excecuted.
-     *
-     * @throws
+     * @throws ClassNotFoundException
+     * @throws IllegalCallbackException
      */
     public function match()
     {
@@ -140,34 +138,39 @@ class Router
 
                     $controllerCallback = explode("@", $route["callback"]);
 
-                    if(count($controllerCallback) !== 2) {
-                        throw new IllegalCallbackException("No callback method was specified! Expected format is: Controller@method");
+                    if (count($controllerCallback) !== 2) {
+                        throw new IllegalCallbackException("No callback method was specified! Expected format is:
+                        Controller@method");
                     }
 
                     $controllerName = $controllerCallback[0];
                     $controllerMethod = $controllerCallback[1];
 
                     //Trying to instantiate the controller
-                    if(!class_exists($controllerName)) {
+                    if (!class_exists($controllerName)) {
                         throw new ClassNotFoundException("Class '" . $controllerName . "' was not found!");
                     }
                     $controller = new $controllerName();
 
+
                     //Try to call the controller method
+                    if (!method_exists($controller, $controllerMethod)) {
+                        throw new MethodNotFoundException("Method '" . $controllerMethod . "' was not found in class '"
+                            . $controllerName . "'!");
+                    }
+
+                    //TODO: Checking parameter?
                     if (isset($routeParameter["parameter"])) {
-                        echo $controller->$controllerArray[1]($routeParameter["parameter"]);
+                        echo $controller->$controllerMethod($routeParameter["parameter"]);
                     } else {
-                        echo $controller->$controllerArray[1]();
+                        echo $controller->$controllerMethod();
                     }
 
                     break;
-
                 }
-
-                //Nothing callable
             }
 
-            //Not a valid route
+            //TODO: Throw Exception when you visit a not defined route -> 404 Error
         }
     }
 }

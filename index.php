@@ -48,6 +48,7 @@ require_once("Kuro/Routing/Router.php");
 require_once("Kuro/Routing/Exception/MethodNotAllowedException.php");
 require_once("Kuro/Routing/Exception/IllegalCallbackException.php");
 require_once("Kuro/Exception/ClassNotFoundException.php");
+require_once("Kuro/Exception/MethodNotFoundException.php");
 
 use Kuro\Routing\Router;
 
@@ -65,7 +66,8 @@ $router->route("GET", "/controller/edit", "TestController@edit");
 
 //Not working callbakcs for error checking
 $router->route("GET", "/test", "TestController");
-$router->route("GET", "/test1", "NoTestController@test");
+$router->route("GET", "/test1", "NoTestController@stufft");
+$router->route("GET", "/test2", "TestController@test");
 
 //Routing using extra paramter
 $router->route("GET", "/controller/{id}", "TestController@show");
