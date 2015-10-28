@@ -4,27 +4,39 @@ namespace Kuro\Routing;
 
 use Closure;
 use Kuro\Routing\Exception\MethodNotAllowedException;
+use Kuro\Routing\Exception\IllegalCallbackException;
 
+
+/**
+ * Kuro\Routing\Router
+ *
+ * This class handles all routings for the framework. Each route has a
+ * method and a function, which is getting called when the route is invoked.
+ *
+ * @package Kuro\Routing
+ * @author Severin Kaderli <severin.kaderli@gmail.com>
+ */
 class Router
 {
     /**
-     * @var array Array which holds all defined routes.
+     * This array holds all defined routes in the application.
+     * @var array
      */
     private $routes = [];
 
     /**
-     * @var string The Base path which is used for routing.
+     * The base path which is used as base for all routes.
+     * @var string
      */
     private $basePath;
 
     /**
-     * @var array Array of allowed methods.
+     * These are the allowed methods for routes.
+     * @var array
      */
     private $allowedMethods = ["POST", "GET", "PUT", "PATCH", "DELETE"];
 
     /**
-     * Returns all defined routes.
-     *
      * @return array
      */
     public function getRoutes()
@@ -33,9 +45,7 @@ class Router
     }
 
     /**
-     * Set the base path for routing.
-     *
-     * @param $basePath
+     * @param string $basePath
      */
     public function setBasePath($basePath)
     {
@@ -43,7 +53,15 @@ class Router
     }
 
     /**
-     * Adds a new route
+     * @return string
+     */
+    public function getBasePath()
+    {
+        return $this->basePath;
+    }
+
+    /**
+     * Define a new route.
      *
      * @param string $methods
      * @param string $route
@@ -64,8 +82,11 @@ class Router
     }
 
     /**
-     * Checks if the current Request is registered as route and if so call
-     * the callback function of the route;
+     * This method checks if the current request has a corresponding
+     * route defined. If a route is defined the correct callback function
+     * is excecuted.
+     *
+     * @throws
      */
     public function match()
     {
@@ -96,9 +117,6 @@ class Router
             //Check if the route is correct
             $matchRoute = false;
 
-            //Simple matching for now
-
-
             $routePattern = preg_replace("/{[A-Za-z0-9]+}/", "(?P<parameter>[A-Za-z0-9]+)", $route["route"]);
             $routePattern = str_replace("/", '\/', $routePattern);
             $routePattern = "/^" . $routePattern . "$/";
@@ -119,19 +137,27 @@ class Router
                 //If it's a string try to call the controller
                 if (is_string($route["callback"])) {
 
-                    $controllerInformation = explode("@", $route["callback"]);
+                    $controllerCallback = explode("@", $route["callback"]);
+
+                    if(count($controllerCallback) !== 2) {
+                        throw new IllegalCallbackException("No callback method was specified! Expected format is: Controller@method");
+                    }
+
+                    $controllerName = $controllerCallback[0];
+                    $controllerMethod = $controllerCallback[1];
 
                     //Trying to instantiate the controller
-                    $controller = new $controllerInformation[0];
+                    $controller = new $controllerName();
 
                     //Try to call the controller method
                     if (isset($routeParameter["parameter"])) {
-                        echo $controller->$controllerInformation[1]($routeParameter["parameter"]);
+                        echo $controller->$controllerArray[1]($routeParameter["parameter"]);
                     } else {
-                        echo $controller->$controllerInformation[1]();
+                        echo $controller->$controllerArray[1]();
                     }
 
                     break;
+
                 }
 
                 //Nothing callable
