@@ -97,9 +97,16 @@ class Router
             $matchRoute = false;
 
             //Simple matching for now
-            if ($route["route"] === $requestUrl) {
+            $routePattern = preg_replace("/{[A-Za-z0-9]+}/", "[A-Za-z0-9]+", $route["route"]);
+            $routePattern = str_replace("/", '\/', $routePattern);
+            $routePattern = "/^" . $routePattern . "$/";
+
+            echo "Route: " . $requestUrl . ", Pattern: " . $routePattern . "<br>";
+
+            if(preg_match($routePattern, $requestUrl) === 1) {
                 $matchRoute = true;
             }
+
 
             if ($matchMethod && $matchRoute) {
 
