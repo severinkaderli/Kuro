@@ -97,16 +97,16 @@ class Router
             $matchRoute = false;
 
             //Simple matching for now
-            $routePattern = preg_replace("/{[A-Za-z0-9]+}/", "[A-Za-z0-9]+", $route["route"]);
+
+
+            $routePattern = preg_replace("/{[A-Za-z0-9]+}/", "(?P<parameter>[A-Za-z0-9]+)", $route["route"]);
             $routePattern = str_replace("/", '\/', $routePattern);
             $routePattern = "/^" . $routePattern . "$/";
 
-            echo "Route: " . $requestUrl . ", Pattern: " . $routePattern . "<br>";
-
-            if(preg_match($routePattern, $requestUrl) === 1) {
+            $routeParameter = [];
+            if(preg_match($routePattern, $requestUrl, $routeParameter) === 1) {
                 $matchRoute = true;
             }
-
 
             if ($matchMethod && $matchRoute) {
 
@@ -125,7 +125,12 @@ class Router
                     $controller = new $controllerInformation[0];
 
                     //Try to call the controller method
-                    echo $controller ->$controllerInformation[1]();
+                    if(isset($routeParameter["parameter"])) {
+                        echo $controller ->$controllerInformation[1]($routeParameter["parameter"]);
+                    } else {
+                        echo $controller ->$controllerInformation[1]();
+                    }
+
 
                     break;
                 }
