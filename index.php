@@ -17,10 +17,16 @@ require_once("Kuro/Routing/Exception/MethodNotAllowedException.php");
 use Kuro\Routing\Router;
 
 $router = new Router();
+$router -> setBasePath("/Kuro");
 
 //Routing using closure
 $router->route("GET", "/", function () {
     return "HELLO WORLD!<br>The Router works :)";
+});
+
+//Routing using Controller and method
+$router->route("GET", "/controller", function() {
+    return 'Callced /controller';
 });
 
 $router->match();

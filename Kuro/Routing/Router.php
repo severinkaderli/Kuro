@@ -13,6 +13,11 @@ class Router
     private $routes = [];
 
     /**
+     * @var string The Base path which is used for routing.
+     */
+    private $basePath;
+
+    /**
      * @var array Array of allowed methods.
      */
     private $allowedMethods = ["POST", "GET", "PUT", "PATCH", "DELETE"];
@@ -25,6 +30,16 @@ class Router
     public function getRoutes()
     {
         return $this->routes;
+    }
+
+    /**
+     * Set the base path for routing.
+     *
+     * @param $basePath
+     */
+    public function setBasePath($basePath)
+    {
+        $this->basePath = $basePath;
     }
 
     /**
@@ -59,8 +74,7 @@ class Router
         $requestMethod = $_SERVER["REQUEST_METHOD"];
 
         //Strip base path and query string from request url
-        //TODO: Don't hardcode the base-directory!!!
-        $requestUrl = substr($requestUrl, strlen("/Kuro"));
+        $requestUrl = substr($requestUrl, strlen($this->basePath));
         if ($strpos = strpos($requestUrl, "?") !== false) {
             $requestUrl = substr($requestUrl, 0, $strpos);
         }
@@ -90,18 +104,12 @@ class Router
             if ($matchMethod && $matchRoute) {
 
                 //Either call the controller method or execute the closure
-                if($route["callback"] instanceof Closure) {
+                if ($route["callback"] instanceof Closure) {
                     echo $route["callback"]();
                 }
+                break;
 
-            } else {
-                //ERROR HANLING not found 404 etc...
-                echo "Nothing to call";
-                echo "<pre>";
-                print_r($route["callback"]);
-                echo "</pre>";
             }
-
         }
     }
 }
