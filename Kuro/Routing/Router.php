@@ -2,6 +2,9 @@
 
 namespace Kuro\Routing;
 
+use Closure;
+use Kuro\Routing\Exception\MethodNotAllowedException;
+
 class Router
 {
     /**
@@ -31,7 +34,7 @@ class Router
      * @param string $route
      * @param mixed $callback
      *
-     * @throws \Kuro\Routing\Exception\MethodNotAllowedException
+     * @throws MethodNotAllowedException
      */
     public function route($methods, $route, $callback)
     {
@@ -39,7 +42,7 @@ class Router
 
         foreach ($methods as $method) {
             if (!in_array(strtoupper($method), $this->allowedMethods)) {
-                throw new \Kuro\Routing\Exception\MethodNotAllowedException($method . " is not an allowed method!");
+                throw new MethodNotAllowedException($method . " is not an allowed method!");
             }
         }
         $this->routes[] = ["methods" => $methods, "route" => $route, "callback" => $callback];
@@ -56,7 +59,8 @@ class Router
         $requestMethod = $_SERVER["REQUEST_METHOD"];
 
         //Strip base path and query string from request url
-        $requestUrl = substr($requestUrl, strlen("/Kuro-Framework"));
+        //TODO: Don't hardcode the base-directory!!!
+        $requestUrl = substr($requestUrl, strlen("/Kuro"));
         if ($strpos = strpos($requestUrl, "?") !== false) {
             $requestUrl = substr($requestUrl, 0, $strpos);
         }
@@ -84,9 +88,18 @@ class Router
             }
 
             if ($matchMethod && $matchRoute) {
-                echo $route["callback"]();
+
+                //Either call the controller method or execute the closure
+                if($route["callback"] instanceof Closure) {
+                    echo $route["callback"]();
+                }
+
             } else {
                 //ERROR HANLING not found 404 etc...
+                echo "Nothing to call";
+                echo "<pre>";
+                print_r($route["callback"]);
+                echo "</pre>";
             }
 
         }
