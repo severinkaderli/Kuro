@@ -1,5 +1,10 @@
 <?php
-
+class TestController{
+    public function show() {
+        return "test";
+        //return new View('test.show');
+    }
+}
 //TODO: Refactor this somehow...
 function exception_handler(\Exception $exception) {
     echo "<pre>";
@@ -25,9 +30,7 @@ $router->route("GET", "/", function () {
 });
 
 //Routing using Controller and method
-$router->route("GET", "/controller", function() {
-    return 'Callced /controller';
-});
+$router->route("GET", "/controller", "TestController@show");
 
 $router->match();
 

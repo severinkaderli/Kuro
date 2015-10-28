@@ -103,13 +103,30 @@ class Router
 
             if ($matchMethod && $matchRoute) {
 
-                //Either call the controller method or execute the closure
+                //Check if the callback is a Closure
                 if ($route["callback"] instanceof Closure) {
                     echo $route["callback"]();
+                    break;
                 }
-                break;
 
+                //If it's a string try to call the controller
+                if(is_string($route["callback"])) {
+
+                    $controllerInformation = explode("@", $route["callback"]);
+
+                    //Trying to instantiate the controller
+                    $controller = new $controllerInformation[0];
+
+                    //Try to call the controller method
+                    echo $controller ->$controllerInformation[1]();
+
+                    break;
+                }
+
+                //Nothing callable
             }
+
+            //Not a valid route
         }
     }
 }
