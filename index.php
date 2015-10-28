@@ -47,6 +47,7 @@ set_exception_handler("exception_handler");
 require_once("Kuro/Routing/Router.php");
 require_once("Kuro/Routing/Exception/MethodNotAllowedException.php");
 require_once("Kuro/Routing/Exception/IllegalCallbackException.php");
+require_once("Kuro/Exception/ClassNotFoundException.php");
 
 use Kuro\Routing\Router;
 

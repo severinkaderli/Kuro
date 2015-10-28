@@ -5,6 +5,7 @@ namespace Kuro\Routing;
 use Closure;
 use Kuro\Routing\Exception\MethodNotAllowedException;
 use Kuro\Routing\Exception\IllegalCallbackException;
+use Kuro\Exception\ClassNotFoundException;
 
 
 /**
@@ -147,6 +148,9 @@ class Router
                     $controllerMethod = $controllerCallback[1];
 
                     //Trying to instantiate the controller
+                    if(!class_exists($controllerName)) {
+                        throw new ClassNotFoundException("Class '" . $controllerName . "' was not found!");
+                    }
                     $controller = new $controllerName();
 
                     //Try to call the controller method
