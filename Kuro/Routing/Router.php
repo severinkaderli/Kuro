@@ -84,24 +84,32 @@ class Router
     }
 
     /**
+     * This function checks if the current request corresponds any defined
+     * route. If there is a matching route the given callback is executed.
+     *
      * @throws ClassNotFoundException
      * @throws IllegalCallbackException
+     * @throws MethodNotFoundException
      */
     public function match()
     {
+        //Variable to check if there are any routes matching
+        $anyRoute = false;
+
+        //Get the current request uri and method
         $requestUrl = $_SERVER["REQUEST_URI"];
         $requestMethod = $_SERVER["REQUEST_METHOD"];
 
-        //Strip base path and query string from request url
+        //Strip base path and query string from the request url
         $requestUrl = substr($requestUrl, strlen($this->basePath));
         if ($strpos = strpos($requestUrl, "?") !== false) {
             $requestUrl = substr($requestUrl, 0, $strpos);
         }
 
-        $anyRoute = false;
-
+        //Try to find a matching route
         foreach ($this->getRoutes() as $route) {
 
+            //Check if there are any matching methods
             $matchMethod = false;
             foreach ($route["methods"] as $method) {
                 if (strcasecmp($method, $requestMethod) === 0) {
@@ -114,52 +122,52 @@ class Router
                 continue;
             }
 
-            //Check if the route is correct
+            //Check if the a route matches the current route
             $matchRoute = false;
-
             $routePattern = preg_replace("/{[A-Za-z0-9]+}/", "(?P<parameter>[A-Za-z0-9]+)", $route["route"]);
             $routePattern = str_replace("/", '\/', $routePattern);
             $routePattern = "/^" . $routePattern . "$/";
 
+            //Check the route and get extra parameter if available
             $routeParameter = [];
             if (preg_match($routePattern, $requestUrl, $routeParameter) === 1) {
                 $matchRoute = true;
             }
 
+            //Try to call the callback function
             if ($matchMethod && $matchRoute) {
 
-                //Check if the callback is a Closure
                 if ($route["callback"] instanceof Closure) {
                     echo $route["callback"]();
                     break;
                 }
 
-                //If it's a string try to call the controller
+                //If the callback is a string try to call the right method
                 if (is_string($route["callback"])) {
 
                     $controllerCallback = explode("@", $route["callback"]);
-
                     if (count($controllerCallback) !== 2) {
                         throw new IllegalCallbackException("No callback method was specified! Expected format is:
                         Controller@method");
                     }
 
+                    //Get controller name and method from callback string
                     $controllerName = $controllerCallback[0];
                     $controllerMethod = $controllerCallback[1];
 
-                    //Trying to instantiate the controller
+                    //Check if the controller exists
                     if (!class_exists($controllerName)) {
                         throw new ClassNotFoundException("Class '" . $controllerName . "' was not found!");
                     }
                     $controller = new $controllerName();
 
-                    //Try to call the controller method
+                    //Check if the method exists
                     if (!method_exists($controller, $controllerMethod)) {
                         throw new MethodNotFoundException("Method '" . $controllerMethod . "' was not found in class '"
                             . $controllerName . "'!");
                     }
 
-                    //TODO: Checking parameter?
+                    //Call the method using parameter if neccesary
                     if (isset($routeParameter["parameter"])) {
                         echo $controller->$controllerMethod($routeParameter["parameter"]);
                     } else {
@@ -167,13 +175,13 @@ class Router
                     }
 
                     $anyRoute = true;
-
                     break;
                 }
             }
         }
 
-        if(!$anyRoute){
+        //Print 404 error if no matching route was found
+        if (!$anyRoute) {
             echo "404 - Not found";
         }
     }
