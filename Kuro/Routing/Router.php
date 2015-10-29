@@ -89,7 +89,6 @@ class Router
      */
     public function match()
     {
-
         $requestUrl = $_SERVER["REQUEST_URI"];
         $requestMethod = $_SERVER["REQUEST_METHOD"];
 
@@ -98,6 +97,8 @@ class Router
         if ($strpos = strpos($requestUrl, "?") !== false) {
             $requestUrl = substr($requestUrl, 0, $strpos);
         }
+
+        $anyRoute = false;
 
         foreach ($this->getRoutes() as $route) {
 
@@ -152,7 +153,6 @@ class Router
                     }
                     $controller = new $controllerName();
 
-
                     //Try to call the controller method
                     if (!method_exists($controller, $controllerMethod)) {
                         throw new MethodNotFoundException("Method '" . $controllerMethod . "' was not found in class '"
@@ -166,11 +166,15 @@ class Router
                         echo $controller->$controllerMethod();
                     }
 
+                    $anyRoute = true;
+
                     break;
                 }
             }
+        }
 
-            //TODO: Throw Exception when you visit a not defined route -> 404 Error
+        if(!$anyRoute){
+            echo "404 - Not found";
         }
     }
 }

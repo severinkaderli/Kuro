@@ -13,6 +13,10 @@ class TestController
         return "edit";
     }
 
+    public function shower() {
+        return 'stuff';
+    }
+
     public function index() {
         return "index";
     }
@@ -70,7 +74,7 @@ $router->route("GET", "/test1", "NoTestController@stufft");
 $router->route("GET", "/test2", "TestController@test");
 
 //Routing using extra paramter
-$router->route("GET", "/controller/{id}", "TestController@show");
+$router->route("GET", "/controller/{id}", "TestController@shower");
 $router->route("GET", "/controller/{id}/delete", "TestController@delete");
 
 $router->match();
