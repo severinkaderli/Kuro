@@ -1,2 +1,2 @@
 # Kuro
-PHP-Framework
+PHP-Framework with PHP7 support
