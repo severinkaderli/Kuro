@@ -36,7 +36,7 @@ function exception_error_handler($severity, $message, $file, $line) {
 }
 set_error_handler("exception_error_handler");
 
-function exception_handler(\Exception $exception)
+function exception_handler($exception)
 {
     echo "<pre>";
     echo "<b>Fatal error:</b> Uncaught exception '" . get_class($exception) . "' with message:<br>";
@@ -58,24 +58,25 @@ use Kuro\Routing\Router;
 
 $router = new Router();
 $router->setBasePath("/Kuro");
+$test = $router->getBasePath();
 
 //Routing using closure
-$router->route("GET", "/", function () {
+$router->addRoute("GET", "/", function () {
     return "HELLO WORLD!<br>The Router works :)";
 });
 
 //Routing using Controller and method
-$router->route("GET", "/controller", "TestController@index");
-$router->route("GET", "/controller/edit", "TestController@edit");
+$router->addRoute("GET", "/controller", "TestController@index");
+$router->addRoute("GET", "/controller/edit", "TestController@edit");
 
 //Not working callbakcs for error checking
-$router->route("GET", "/test", "TestController");
-$router->route("GET", "/test1", "NoTestController@stufft");
-$router->route("GET", "/test2", "TestController@test");
+$router->addRoute("GET", "/test", "TestController");
+$router->addRoute("GET", "/test1", "NoTestController@stufft");
+$router->addRoute("GET", "/test2", "TestController@test");
 
 //Routing using extra paramter
-$router->route("GET", "/controller/{id}", "TestController@shower");
-$router->route("GET", "/controller/{id}/delete", "TestController@delete");
+$router->addRoute("GET", "/controller/{id}", "TestController@shower");
+$router->addRoute("GET", "/controller/{id}/delete", "TestController@delete");
 
 $router->match();
 

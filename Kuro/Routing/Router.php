@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace Kuro\Routing;
 
 use Closure;
@@ -41,7 +41,7 @@ class Router
     /**
      * @return array
      */
-    public function getRoutes()
+    public function getRoutes() : array
     {
         return $this->routes;
     }
@@ -49,7 +49,7 @@ class Router
     /**
      * @param string $basePath
      */
-    public function setBasePath($basePath)
+    public function setBasePath(string $basePath)
     {
         $this->basePath = $basePath;
     }
@@ -57,7 +57,7 @@ class Router
     /**
      * @return string
      */
-    public function getBasePath()
+    public function getBasePath() : string
     {
         return $this->basePath;
     }
@@ -71,7 +71,7 @@ class Router
      *
      * @throws MethodNotAllowedException
      */
-    public function route($methods, $route, $callback)
+    public function addRoute(string $methods, string $route, $callback)
     {
         $methods = explode("|", $methods);
 
