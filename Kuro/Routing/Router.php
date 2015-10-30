@@ -84,6 +84,19 @@ class Router
     }
 
     /**
+     * Define multiple routes using an array. The array should look
+     * like this:
+     * 
+     *
+     * @param array $routes
+     */
+    public function addRoutes(array $routes) {
+        foreach($routes as $route) {
+            $this->addRoute($route[0], $route[1], $route[2]);
+        }
+    }
+
+    /**
      * This function checks if the current request corresponds any defined
      * route. If there is a matching route the given callback is executed.
      *

@@ -75,8 +75,10 @@ $router->addRoute("GET", "/test1", "NoTestController@stufft");
 $router->addRoute("GET", "/test2", "TestController@test");
 
 //Routing using extra paramter
-$router->addRoute("GET", "/controller/{id}", "TestController@shower");
-$router->addRoute("GET", "/controller/{id}/delete", "TestController@delete");
+$router->addRoutes([
+    ["GET", "/controller/{id}", "TestController@shower"],
+    ["GET", "/controller/{id}/delete", "TestController@delete"]
+]);
 
 $router->match();
 
