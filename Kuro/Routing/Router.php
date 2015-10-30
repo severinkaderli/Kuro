@@ -100,14 +100,14 @@ class Router
      * This function checks if the current request corresponds any defined
      * route. If there is a matching route the given callback is executed.
      *
+     * @return array
+     *
      * @throws ClassNotFoundException
      * @throws IllegalCallbackException
      * @throws MethodNotFoundException
      */
-    public function match()
+    public function matchRoute() : array
     {
-        //Variable to check if there are any routes matching
-        $anyRoute = false;
 
         //Get the current request uri and method
         $requestUrl = $_SERVER["REQUEST_URI"];
@@ -150,9 +150,8 @@ class Router
             //Try to call the callback function
             if ($matchMethod && $matchRoute) {
 
-                if ($route["callback"] instanceof Closure) {
-                    echo $route["callback"]();
-                    break;
+                if ($route["callback"] instanceof Closure) {  
+                    return [$route["callback"]];
                 }
 
                 //If the callback is a string try to call the right method
@@ -160,8 +159,7 @@ class Router
 
                     $controllerCallback = explode("@", $route["callback"]);
                     if (count($controllerCallback) !== 2) {
-                        throw new IllegalCallbackException("No callback method was specified! Expected format is:
-                        Controller@method");
+                        throw new IllegalCallbackException("No callback method was specified! Expected format is: Controller@method");
                     }
 
                     //Get controller name and method from callback string
@@ -172,30 +170,18 @@ class Router
                     if (!class_exists($controllerName)) {
                         throw new ClassNotFoundException("Class '" . $controllerName . "' was not found!");
                     }
-                    $controller = new $controllerName();
 
                     //Check if the method exists
-                    if (!method_exists($controller, $controllerMethod)) {
+                    if (!method_exists($controllerName, $controllerMethod)) {
                         throw new MethodNotFoundException("Method '" . $controllerMethod . "' was not found in class '"
                             . $controllerName . "'!");
                     }
 
-                    //Call the method using parameter if neccesary
-                    if (isset($routeParameter["parameter"])) {
-                        echo $controller->$controllerMethod($routeParameter["parameter"]);
-                    } else {
-                        echo $controller->$controllerMethod();
-                    }
-
-                    $anyRoute = true;
-                    break;
+                    return [$controllerName, $controllerMethod, $routeParameter["parameter"]];
                 }
             }
         }
 
-        //Print 404 error if no matching route was found
-        if (!$anyRoute) {
-            echo "404 - Not found";
-        }
+        return [];
     }
 }

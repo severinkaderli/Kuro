@@ -80,7 +80,22 @@ $router->addRoutes([
     ["GET", "/controller/{id}/delete", "TestController@delete"]
 ]);
 
-$router->match();
+$routeCallback = $router->matchRoute();
+$callbackLength = count($routeCallback);
+if($callbackLength === 1) {
+    echo $routeCallback[0]();
+} else if($callbackLength === 3) {
 
+    $controllerName = $routeCallback[0];
+    $controllerMethod = $routeCallback[1];
+    $controllerParameter = $routeCallback[2];
+
+    $controller = new $controllerName();
+    echo $controller->$controllerMethod($controllerParameter);
+} else {
+    http_response_code(404);
+    echo "<h1>404 - Not found</h1>";
+    exit();
+}
 
 
