@@ -36,11 +36,11 @@ use Kuro\Routing\Router;
 $router = new Router();
 $router->setBasePath("/Kuro");
 $test = $router->getBasePath();
+class SomeController {
 
+}
 //Routing using closure
-$router->addRoute("GET", "/", function () {
-    return "HELLO WORLD!<br>The Router works :)<br>";
-});
+$router->addRoute("GET", "/", "fds");
 
 $routeCallback = $router->matchRoute();
 $callbackLength = count($routeCallback);

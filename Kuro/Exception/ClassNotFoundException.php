@@ -6,7 +6,7 @@ use Exception;
 /**
  * Kuro\Exception\ClassNotFoundException
  *
- * This is exception is thrown when a class cannot
+ * This exception is thrown when a class cannot
  * be found.
  *
  * @package Kuro\Exception
@@ -14,10 +14,17 @@ use Exception;
  */
 class ClassNotFoundException extends Exception
 {
+	/**
+	 * @param mixed $class
+	 */
 	public function __construct($class) {
 
-		$message = "Class '" . getClass($class) . "' was not found";
+		if(!is_string($class)) {
+			$class = get_class($class);
+		}
 
-		parent::__construct();
+		$message = "Class '" . $class . "' was not found";
+
+		parent::__construct($message);
 	}
 }

@@ -78,7 +78,7 @@ class Router
 
         foreach ($methods as $method) {
             if (!in_array(strtoupper($method), $this->allowedMethods)) {
-                throw new MethodNotAllowedException($method . " is not an allowed method!");
+                throw new MethodNotAllowedException($method);
             }
         }
         $this->routes[] = ["methods" => $methods, "route" => $route, "callback" => $callback];
@@ -160,7 +160,7 @@ class Router
 
                     $controllerCallback = explode("@", $route["callback"]);
                     if (count($controllerCallback) !== 2) {
-                        throw new IllegalCallbackException("No callback method was specified! Expected format is: Controller@method");
+                        throw new IllegalCallbackException();
                     }
 
                     //Get controller name and method from callback string
@@ -169,13 +169,12 @@ class Router
 
                     //Check if the controller exists
                     if (!class_exists($controllerName)) {
-                        throw new ClassNotFoundException("Class '" . $controllerName . "' was not found!");
+                        throw new ClassNotFoundException($controllerName);
                     }
 
                     //Check if the method exists
                     if (!method_exists($controllerName, $controllerMethod)) {
-                        throw new MethodNotFoundException("Method '" . $controllerMethod . "' was not found in class '"
-                            . $controllerName . "'!");
+                        throw new MethodNotFoundException($controllerMethod, $controllerName);
                     }
 
                     return [$controllerName, $controllerMethod, $routeParameter["parameter"]];

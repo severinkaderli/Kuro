@@ -6,7 +6,7 @@ use Exception;
 /**
  * Kuro\Exception\PropertyNotDefinedException
  *
- * This is exception is thrown when a class property
+ * This exception is thrown when a class property
  * is not defined.
  *
  * @package Kuro\Exception
@@ -14,8 +14,16 @@ use Exception;
  */
 class PropertyNotDefinedException extends Exception
 {
-	public function __construct($property, $class) {
-		$message = "Property '" . $property . "' is not defined in class '" . get_class($class) . "'";
+	/**
+	 * @param string $property
+	 * @param mixed $class
+	 */
+	public function __construct(string $property, $class) {
+		if(!is_string($class)) {
+			$class = get_class($class);
+		}
+
+		$message = "Property '" . $property . "' is not defined in class '" . $class . "'";
 
 		parent::__construct($message);
 	}
