@@ -103,9 +103,12 @@ class TestModel extends Kuro\Database\Model {
 
 }
 
-$model = new TestModel;
+$model = new TestModel();
 
-$model->setAge(3);
-$model->setName("Severin");
+$model -> setAge(20);
+echo "Alter: " . $model ->getAge();
 
-echo $model -> getName();
+echo "<pre>";
+print_r($model);
+
+echo "</pre>";
