@@ -1,30 +1,5 @@
 <?php
 
-class TestController
-{
-    public function show($id)
-    {
-        return "show with id -> " . $id;
-        //return new View('test.show');
-    }
-
-    public function edit()
-    {
-        return "edit";
-    }
-
-    public function shower() {
-        return 'stuff';
-    }
-
-    public function index() {
-        return "index";
-    }
-
-    public function delete($id) {
-        return 'delete';
-    }
-}
 
 //TODO: Put these error and exception handlers somewhere
 function exception_error_handler($severity, $message, $file, $line) {
@@ -53,6 +28,7 @@ require_once("Kuro/Routing/Exception/MethodNotAllowedException.php");
 require_once("Kuro/Routing/Exception/IllegalCallbackException.php");
 require_once("Kuro/Exception/ClassNotFoundException.php");
 require_once("Kuro/Exception/MethodNotFoundException.php");
+require_once("Kuro/Exception/PropertyNotDefinedException.php");
 require_once("Kuro/Database/Model.php");
 
 use Kuro\Routing\Router;
@@ -65,21 +41,6 @@ $test = $router->getBasePath();
 $router->addRoute("GET", "/", function () {
     return "HELLO WORLD!<br>The Router works :)<br>";
 });
-
-//Routing using Controller and method
-$router->addRoute("GET", "/controller", "TestController@index");
-$router->addRoute("GET", "/controller/edit", "TestController@edit");
-
-//Not working callbakcs for error checking
-$router->addRoute("GET", "/test", "TestController");
-$router->addRoute("GET", "/test1", "NoTestController@stufft");
-$router->addRoute("GET", "/test2", "TestController@test");
-
-//Routing using extra paramter
-$router->addRoutes([
-    ["GET", "/controller/{id}", "TestController@shower"],
-    ["GET", "/controller/{id}/delete", "TestController@delete"]
-]);
 
 $routeCallback = $router->matchRoute();
 $callbackLength = count($routeCallback);
@@ -99,8 +60,10 @@ if($callbackLength === 1) {
     exit();
 }
 
+
 class TestModel extends Kuro\Database\Model {
 
 }
 
 $model = new TestModel();
+$model->sefStuff("test");

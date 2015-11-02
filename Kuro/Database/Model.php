@@ -2,8 +2,10 @@
 
 namespace Kuro\Database;
 
+use Kuro\Exception\MethodNotFoundException;
+use Kuro\Exception\PropertyNotDefinedException;
 
-abstract class Model {
+class Model {
 
 
 	protected $table;
@@ -24,7 +26,7 @@ abstract class Model {
 	}
 
 	/**
-	 * Get an property
+	 * Get a property
 	 *
 	 * @param string $key
 	 * @return mixed
@@ -34,11 +36,11 @@ abstract class Model {
 			return $this -> $property;
 		}
 		
-		throw new \Exception();
+		throw new PropertyNotDefinedException($property, $this);
 	}
 
 	/**
-	 * Set an property
+	 * Set a property
 	 *
 	 * @param string $key
 	 * @param mixed $value
@@ -51,9 +53,15 @@ abstract class Model {
 			return true;
 		}
 
-		throw new \Exception();
+		throw new PropertyNotDefinedException($property, $this);
 	}
 
+	/**
+	 * Check if a property exists
+	 *
+	 * @param string $property
+	 * @return bool
+	 */
 	public function hasProperty(string $property) {
 		return property_exists($this, $property);
 	}
@@ -73,13 +81,9 @@ abstract class Model {
 
 		switch ($methodType) {
 			case 'get':
-	
-				echo "Getting " . $property;
 				return $this->getProperty($property);
 
 			case 'set':
-				
-				echo "Setting " . $property;
 				$this->setProperty($property, $value);
 				return true;	
 
@@ -87,12 +91,9 @@ abstract class Model {
 				return $this->hasProperty($property);
 			
 			default:
-				# code...
 				break;
 		}
 
-
-		//TODO: Throw methodnotexist exception
-		throw new \Exception();
+		throw new MethodNotFoundException($method, $this);
 	}
 }
