@@ -53,6 +53,7 @@ require_once("Kuro/Routing/Exception/MethodNotAllowedException.php");
 require_once("Kuro/Routing/Exception/IllegalCallbackException.php");
 require_once("Kuro/Exception/ClassNotFoundException.php");
 require_once("Kuro/Exception/MethodNotFoundException.php");
+require_once("Kuro/Database/Model.php");
 
 use Kuro\Routing\Router;
 
@@ -62,7 +63,7 @@ $test = $router->getBasePath();
 
 //Routing using closure
 $router->addRoute("GET", "/", function () {
-    return "HELLO WORLD!<br>The Router works :)";
+    return "HELLO WORLD!<br>The Router works :)<br>";
 });
 
 //Routing using Controller and method
@@ -98,4 +99,13 @@ if($callbackLength === 1) {
     exit();
 }
 
+class TestModel extends Kuro\Database\Model {
 
+}
+
+$model = new TestModel;
+
+$model->setAge(3);
+$model->setName("Severin");
+
+echo $model -> getName();
