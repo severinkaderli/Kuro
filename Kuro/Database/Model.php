@@ -5,22 +5,31 @@ namespace Kuro\Database;
 use Kuro\Exception\MethodNotFoundException;
 use Kuro\Exception\PropertyNotDefinedException;
 
+/**
+ * Kuro\Database\Model
+ *
+ * This is the base model class which all model are
+ * inherited from.
+ *
+ * @package Kuro\Database
+ * @author Severin Kaderli <severin.kaderli@gmail.com>
+ */
 class Model {
 
-
+	/**
+	 * The database table which this model belongs to. If it's
+	 * not set the model name is used as table name.
+	 * @var $table
+	 */
 	protected $table;
-	private $properties = [];
 
 	/**
 	 * Get attributes from table
 	 */
 	public function __construct() {
-		//Get properties from database and fill _properties
-		//If table property is not set table name = model name
-		//e.g. TestModel -> Tablename: Test
+		//TODO: Remove this tmp data
 		$tmpProperties = ["age", "name"];
 		foreach($tmpProperties as $property) {
-			array_push($this->properties, $property);
 			$this->$property = null;
 		}
 	}
@@ -30,6 +39,8 @@ class Model {
 	 *
 	 * @param string $key
 	 * @return mixed
+	 *
+	 * @throws PropertyNotDefinedException
 	 */
 	public function getProperty(string $property) {
 		if(property_exists($this, $property)) {
@@ -45,6 +56,8 @@ class Model {
 	 * @param string $key
 	 * @param mixed $value
 	 * @return bool
+	 *
+	 * @throws PropertyNotDefinedException
 	 */
 	public function setProperty(string $property, $value) {
 		if(property_exists($this, $property)) {
@@ -67,7 +80,14 @@ class Model {
 	}
 
 	/**
+	 * We check to see if a property was accessed using
+	 * a dynamic method. We then route the method calls
+	 * to the corresponding internal methods.
 	 *
+	 * @param string $method 
+	 * @param array $params
+	 * 
+	 * @throws PropertyNotDefinedException
 	 */
 	public function __call($method, $params) {
 

@@ -9,7 +9,6 @@ use Kuro\Exception\MethodNotFoundException;
 use Kuro\Routing\Exception\IllegalCallbackException;
 use Kuro\Routing\Exception\MethodNotAllowedException;
 
-
 /**
  * Kuro\Routing\Router
  *
