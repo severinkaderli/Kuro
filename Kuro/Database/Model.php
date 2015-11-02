@@ -54,6 +54,10 @@ abstract class Model {
 		throw new \Exception();
 	}
 
+	public function hasProperty(string $property) {
+		return property_exists($this, $property);
+	}
+
 	/**
 	 *
 	 */
@@ -80,8 +84,7 @@ abstract class Model {
 				return true;	
 
 			case 'has':
-				//NOt implemented yet...
-				break;
+				return $this->hasProperty($property);
 			
 			default:
 				# code...
