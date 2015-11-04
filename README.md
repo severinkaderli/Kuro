@@ -10,3 +10,4 @@ PHP-Framework with PHP7 support
  - Default operations (delete etc..)
  - Kuro\Database\Model
  - Kuro\Database\DatabaseConnection
+ - Maybe better way for models?
