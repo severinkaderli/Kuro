@@ -11,3 +11,4 @@ PHP-Framework with PHP7 support
  - Kuro\Database\Model
  - Kuro\Database\DatabaseConnection
  - Maybe better way for models?
+* Unit-Tests
