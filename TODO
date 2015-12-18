@@ -1,0 +1,49 @@
+Framework:
+  ☐ Adding a Core Folder/Namespace
+  ☐ Settings file
+    Maybe using dot.env would be a good idea for this to ensure env
+    independent settings. Default could still be set.
+Requests & Routing:
+  ☐ Kuro\Core\Http\Request
+    This should combine the $_GET and $_POST super globals and 'clean' them up
+    a bit. E.g. if magic quotes is on, strip slashes should be added. More
+    cleaning up would be done later in the specfic model validators
+    ☐ Deciding if this class should be a global object or a static class
+      $request->get("array-key") vs. Request::get("array-key"). The static
+      approach looks nicer to me in the first moment. But i need to decide
+      that sometimes. 
+  ☐ Update Kuro\Core\Routing\Router to newest code base
+    I need to update this class with the newest changes I made for my school
+    project. But I need to update it to php7 again, which is no big deal.
+
+Sessions & Cookies:
+  ☐ Kuro\Core\Session
+    This should be a wrapper around the $_SESSION super global. The class
+    should work kinda like this -> Session::get(), Session::set() and
+    Session::has() are methods that should be implemented. Some other methods
+    that would be handy -> unset(), start(), regenerate(). So it's actually
+    a wrapper around most of the session functions.
+  ☐ Kuro\Core\Cookie
+    This should be created the same way like the session class. Maybe
+    some extra features for deleting a cookie or something. Because cookies
+    don't need to be started specifically it's goind less complex than
+    the session class. Maybe implement cookie encrypting...
+
+Database:
+  ☐ Kuro\Core\Database\DatabaseConnection
+    Should be realized with PDO, to ensure compatibility with different
+    database drivers. It should also use prepared statements to be
+    secured agains SQL-Injection attacks.
+    ☐ Select method (only used to get data from the database)
+    ☐ Insert/delete/update method (No result are getting back)
+      To get those both methods to work there should be one private? query
+      method which executes the query. Maybe one method is enough and simple
+      enough?
+
+Tests:
+  ☐ Unit-Tests
+    Create a way to tests the router -> Custom requests
+    ☐ Get phpunit to work with php7
+    ☐ Create test folder structure
+    ☐ Read up a bit more about Mocking and other unit-testing stuff
+    ☐ Writing the actual tests
