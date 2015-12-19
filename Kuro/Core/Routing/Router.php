@@ -2,6 +2,7 @@
 namespace Kuro\Core\Routing;
 
 use Closure;
+use Kuro\Core\Http\Response;
 
 /**
  * This router handles the main request routing for the framework. You can add
@@ -89,36 +90,13 @@ class Router
             $this->addRoute($route[0], $route[1], $route[2]);
         }
     }
-    
-    /**
-     * This function checks if the current request corresponds any defined
-     * route. If there is a matching route the given callback is executed.
-     *
-     * @return array
-     *
-     */
-    public function dispatch() : array
-    {
-        
-        //Get the current request uri and method
-        $requestUrl = $_SERVER["REQUEST_URI"];
-        $requestMethod = $_SERVER["REQUEST_METHOD"];
 
-        echo $requestUrl;
-        echo "<br>";
-        echo $requestMethod;
-        
-        //Strip base path and query string from the request url
-        $requestUrl = rtrim(str_replace($this->basePath, "", $requestUrl), "/");
-        if(empty($requestUrl)) {
-            $requestUrl = "/";
-        }
-        echo "new: " . $requestUrl;
-        
-        if ($strpos = strpos($requestUrl, "?") !== false) {
-            $requestUrl = substr($requestUrl, 0, $strpos);
-        }
-        
+
+    public function matchRequest($requestUrl, $requestMethod)
+    {
+
+        $response = new Response();
+
         //Try to find a matching route
         foreach ($this->getRoutes() as $route) {
             
@@ -156,7 +134,9 @@ class Router
                     
                     $returnArray["type"] = "Closure";
                     $returnArray["function"] = $route["callback"];
-                    return $returnArray;
+                    $response->setStatusCode(200);
+                    $response->setBody($route["callback"]());
+                    return $response;
                 }
                 
                 //If the callback is a string try to call the right method
@@ -190,7 +170,44 @@ class Router
                 }
             }
         }
-        
-        return ["type" => "Error"];
+
+        $response->setStatusCode(404);
+        $response->setBody("<h1>404 - Not found</h1>");
+        return $response;
     }
+    
+    /**
+     * This function checks if the current request corresponds any defined
+     * route. If there is a matching route the given callback is executed.
+     *
+     * @return \Kuro\Core\Http\Response
+     *
+     */
+    public function dispatch() : \Kuro\Core\Http\Response
+    {
+        
+        //TODO: Create request object here
+
+        //Get the current request uri and method
+        $requestUrl = $_SERVER["REQUEST_URI"];
+        $requestMethod = $_SERVER["REQUEST_METHOD"];
+        
+        //Strip base path and query string from the request url
+        $requestUrl = rtrim(str_replace($this->basePath, "", $requestUrl), "/");
+        if(empty($requestUrl)) {
+            $requestUrl = "/";
+        }
+        
+        if ($strpos = strpos($requestUrl, "?") !== false) {
+            $requestUrl = substr($requestUrl, 0, $strpos);
+        }
+        
+        //TODO give the request object here
+        $response = $this->matchRequest($requestUrl, $requestMethod);
+        return $response;
+        //TODO: remove this piece of code...
+        //return ["type" => "Error"];
+    }
+
+
 }

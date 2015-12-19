@@ -33,45 +33,20 @@ set_exception_handler("exception_handler");
 use Kuro\Core\Routing\Router;
 
 $router = new Router();
-//Todo: Make it possible to use https...
-echo "BASEDIR: " . BASE_DIR; echo "<br>";
-echo "SERVERNAME: " . $_SERVER['SERVER_NAME'];echo "<br>";
+
 $router->setBasePath(str_replace("http://" . $_SERVER['SERVER_NAME'], "", BASE_DIR));
 
-echo "BASE_PATH: ".$router->getBasePath(); echo "<br>";
 
 //Routing using closure
 $router->addRoute("GET", "/", function() {
-    echo "Index-page";
+    return "Index-page";
 });
 
 $router->addRoute("GET", "/test", function() {
-    $response = new Kuro\Core\Http\Response(201, "hello world!", ["test" => "232"]);
-    $response->send();
+    return "test-page";
 });
 
 
-$match = $router->dispatch();
+$response = $router->dispatch();
 
-echo "<pre>";
-var_dump($match);
-echo "</pre>";
-
-switch ($match["type"]) {
-    case "Closure":
-        $match["function"]();
-        break;
-    case "Controller":
-        $controller = new $match["controller"]();
-        if (is_null($match["parameter"])) {
-            $controller->$match["method"]();
-        } else {
-            $controller->$match["method"]($match["parameter"]);
-        }
-        break;
-    case "Error":
-        //Core\Routing\Redirect::to("/");
-        http_response_code(500);
-        echo "error";
-        break;
-}
+$response->send();

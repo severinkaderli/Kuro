@@ -4,6 +4,8 @@ namespace Kuro\Core\Http;
 
 /**
  * 
+ * 
+ * @author  Severin Kaderli <severin.kaderli@gmail.com>
  */
 class Response
 {
@@ -19,7 +21,7 @@ class Response
 	 * 
 	 * @var string
 	 */
-	private $body;
+	private $body = "";
 
 	/**
 	 * The response headers
@@ -29,23 +31,19 @@ class Response
 	private $headers = [];
 
 	/**
-	 * @param int $statusCode
-	 * @param string $content
-	 * @param array $headers
-	 */
-	public function __construct(int $statusCode, string $body, array $headers)
-	{
-		$this->statusCode = $statusCode;
-		$this->body = $body;
-		$this->headers = $headers;
-	}
-
-	/**
 	 * @return int
 	 */
 	public function getStatusCode() : int
 	{
 		return $this->statusCode;
+	}
+
+	/**
+	 * @param int $statusCode
+	 */
+	public function setStatusCode(int $statusCode)
+	{
+		$this->statusCode = $statusCode;
 	}
 
 	/**
@@ -57,11 +55,28 @@ class Response
 	}
 
 	/**
+	 * @param string $header
+	 * @param string $value
+	 */
+	public function setHeader(string $header, string $value)
+	{
+		$this->headers[$header] = $value; 
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getBody() : string
 	{
 		return $this->body;
+	}
+
+	/**
+	 * @param string $body
+	 */
+	public function setBody(string $body)
+	{
+		$this->body = $body;
 	}
 
 	/**
