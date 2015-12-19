@@ -1,7 +1,28 @@
 <?php
+//Root path to the kuro directory -> /var/www/html/kuro
 define("__ROOT__", __DIR__ . "/");
-define("BASE_DIR", "http://" . dirname($_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF']));
+
+//Either http:// or https://
 define("PROTOCOL", (isset($_SERVER["https"]) ? "https://" : "http://"));
+
+//Url to the directory of kuro -> http://example.com/path/to/kuro
+define("BASE_URL", PROTOCOL . dirname($_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF']));
+
+//Url of the server -> http://example.com
+define("SERVER_URL", PROTOCOL . $_SERVER['SERVER_NAME']);
+
+//Only the path of Kuro -> /path/to/kuro
+define("BASE_PATH", str_replace(SERVER_URL, "", BASE_URL));
+
+function constDebug($name)
+{
+    echo $name . ": " . constant($name) . "<br>";
+}
+
+constDebug("BASE_PATH");
+
+
+
 function classAutoload($class) {
     $class = implode("/", explode("\\", $class));
     require_once(__ROOT__ . $class . ".php");

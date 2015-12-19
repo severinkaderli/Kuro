@@ -22,12 +22,6 @@ class Router
     private $routes = [];
     
     /**
-     * The base path which is used as base for all routes.
-     * @var string
-     */
-    private $basePath;
-    
-    /**
      * These are the allowed methods for routes.
      * @var array
      */
@@ -39,22 +33,6 @@ class Router
     public function getRoutes() : array
     {
         return $this->routes;
-    }
-    
-    /**
-     * @param string $basePath
-     */
-    public function setBasePath(string $basePath)
-    {
-        $this->basePath = $basePath;
-    }
-    
-    /**
-     * @return string
-     */
-    public function getBasePath() : string
-    {
-        return $this->basePath;
     }
     
     /**
@@ -191,7 +169,7 @@ class Router
         
         //TODO: Create request object here
         $request = new Request($_SERVER["REQUEST_URI"], $_SERVER["REQUEST_METHOD"]);
-        var_dump($request->getUrl());
+        echo "<br>";
         
         
         //TODO give the request object here

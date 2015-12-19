@@ -16,8 +16,8 @@ class Request
 	private $method;
 
 	/**
-	 * The url where the requests points to
-	 * 
+	 * Contain the url with the base path stripped away. This url is used
+	 * to match routes.
 	 * @var string
 	 */
 	private $url;
@@ -36,8 +36,14 @@ class Request
 	 */
 	private $headers = [];
 
-	
-	public function __construct($url, $method = "GET")
+	/**
+	 * Sets the url and the method of the request. In addition to that
+	 * it merges the POST and GET data from the request.
+	 * 
+	 * @param string $url
+	 * @param string $method
+	 */
+	public function __construct(string $url, string $method = "GET")
 	{
 		$this->setUrl($url);
 		$this->setMethod($method);
@@ -69,21 +75,27 @@ class Request
 	}
 
 	/**
+	 * This sets both, the full url and the short route url.
+	 * 
 	 * @param string $url
 	 */
 	public function setUrl(string $url)
 	{
-		//Get the base path
-		$basePath = str_replace(PROTOCOL . $_SERVER['SERVER_NAME'], "", BASE_DIR);
 
-		//Strip the base path and query string from the request url
-        $url = rtrim(str_replace($basePath, "", $url), "/");
+		//We strip the base path from the request url, so we can match
+		//it with the routes.
+        $url = rtrim(str_replace(BASE_PATH, "", $url), "/");
+
+        //Remove the query string
         if ($strpos = strpos($url, "?") !== false) {
             $url = substr($url, 0, $strpos);
         }
+
+        //If the url is empty it's the root route.
         if(empty($url)) {
             $url = "/";
         }
+        
 		$this->url = $url;
 	}
 
