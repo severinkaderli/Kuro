@@ -2,8 +2,6 @@
 namespace Kuro\Core\Routing;
 
 use Closure;
-use Kuro\Core\Http\Response;
-use Kuro\Core\Http\Request;
 
 /**
  * This router handles the main request routing for the framework. You can add
@@ -69,12 +67,17 @@ class Router
             $this->addRoute($route[0], $route[1], $route[2]);
         }
     }
-
-
-    public function matchRequest($requestUrl, $requestMethod)
+    
+    /**
+     * We try to find a matching route for the given request. If we find one
+     * we return a response object with the correct response body. In case if
+     * there's no matching route we return a 404 response.
+     *
+     * @return \Kuro\Core\Http\Response
+     */
+    public function dispatch(\Kuro\Core\Http\Request $request) : \Kuro\Core\Http\Response
     {
-
-        $response = new Response();
+        $response = new \Kuro\Core\Http\Response();
 
         //Try to find a matching route
         foreach ($this->getRoutes() as $route) {
@@ -82,7 +85,7 @@ class Router
             //Check if there are any matching methods
             $matchMethod = false;
             foreach ($route["methods"] as $method) {
-                if (strcasecmp($method, $requestMethod) === 0) {
+                if (strcasecmp($method, $request->getMethod()) === 0) {
                     $matchMethod = true;
                     break;
                 }
@@ -93,6 +96,7 @@ class Router
             }
             
             //Check if the a route matches the current route
+            //TODO: Add posibility of multiple parameter wildcardds
             $matchRoute = false;
             $routePattern = preg_replace("/{[A-Za-z0-9]+}/", "(?P<parameter>[0-9]+)", $route["route"]);
             $routePattern = str_replace("/", '\/', $routePattern);
@@ -100,7 +104,7 @@ class Router
             
             //Check the route and get extra parameter if available
             $routeParameter = [];
-            if (preg_match($routePattern, $requestUrl, $routeParameter) === 1) {
+            if (preg_match($routePattern, $request->getUrl(), $routeParameter) === 1) {
                 $matchRoute = true;
             }
             
@@ -142,38 +146,16 @@ class Router
                         return ["type" => "error"];
                     }
 
-
+                    $response->setStatusCode(200);
+                    $response->setBody((new $controllerName)->$controllerMethod());
                     
-                    $returnArray["controller"] = $controllerName;
-                    $returnArray["method"] = $controllerMethod;
-                    
-                    return $returnArray;
+                    return $response;
                 }
             }
         }
 
         $response->setStatusCode(404);
         $response->setBody("<h1>404 - Not found</h1>");
-        return $response;
-    }
-    
-    /**
-     * This function checks if the current request corresponds any defined
-     * route. If there is a matching route the given callback is executed.
-     *
-     * @return \Kuro\Core\Http\Response
-     *
-     */
-    public function dispatch() : \Kuro\Core\Http\Response
-    {
-        
-        //TODO: Create request object here
-        $request = new Request($_SERVER["REQUEST_URI"], $_SERVER["REQUEST_METHOD"]);
-        echo "<br>";
-        
-        
-        //TODO give the request object here
-        $response = $this->matchRequest($request->getUrl(), $request->getMethod());
         return $response;
     }
 }

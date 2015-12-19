@@ -66,6 +66,6 @@ $router->addRoute("GET", "/test", function() {
 });
 
 
-$response = $router->dispatch();
+$response = $router->dispatch(new Kuro\Core\Http\Request($_SERVER["REQUEST_URI"], $_SERVER["REQUEST_METHOD"]));
 
 $response->send();
