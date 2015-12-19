@@ -1,5 +1,12 @@
 <?php
+define("__ROOT__", __DIR__ . "/");
+define("BASE_DIR", "http://" . dirname($_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF']));
 
+function classAutoload($class) {
+    $class = implode("/", explode("\\", $class));
+    require_once(__ROOT__ . $class . ".php");
+}
+spl_autoload_register("classAutoload");
 //TODO: Put these error and exception handlers somewhere
 function exception_error_handler($severity, $message, $file, $line) {
     if (!(error_reporting() & $severity)) {
@@ -21,45 +28,49 @@ function exception_handler($exception) {
 
 set_exception_handler("exception_handler");
 
-//TODO: Autoloading stuff...
-require_once ("Kuro/Routing/Router.php");
-require_once ("Kuro/Routing/Exception/MethodNotAllowedException.php");
-require_once ("Kuro/Routing/Exception/IllegalCallbackException.php");
-require_once ("Kuro/Exception/ClassNotFoundException.php");
-require_once ("Kuro/Exception/MethodNotFoundException.php");
-require_once ("Kuro/Exception/PropertyNotDefinedException.php");
-require_once ("Kuro/Database/Model.php");
+
 
 use Kuro\Core\Routing\Router;
 
 $router = new Router();
-$router->setBasePath("/Kuro");
-$test = $router->getBasePath();
-class SomeController
-{
-}
+//Todo: Make it possible to use https...
+echo "BASEDIR: " . BASE_DIR; echo "<br>";
+echo "SERVERNAME: " . $_SERVER['SERVER_NAME'];echo "<br>";
+$router->setBasePath(str_replace("http://" . $_SERVER['SERVER_NAME'], "", BASE_DIR));
+
+echo "BASE_PATH: ".$router->getBasePath(); echo "<br>";
 
 //Routing using closure
-$router->addRoute("GET", "/", function () {
-    echo "test";
+$router->addRoute("GET", "/", function() {
+    echo "Index-page";
 });
 
-$routeCallback = $router->dispatch();
-$callbackLength = count($routeCallback);
-/*if ($callbackLength === 1) {
-    echo $routeCallback[0]();
-} 
-else if ($callbackLength === 3) {
-    
-    $controllerName = $routeCallback[0];
-    $controllerMethod = $routeCallback[1];
-    $controllerParameter = $routeCallback[2];
-    
-    $controller = new $controllerName();
-    echo $controller->$controllerMethod($controllerParameter);
-} 
-else {
-    //http_response_code(404);
-    echo "<h1>404 - Not found</h1>";
-    exit();
-}*/
+$router->addRoute("GET", "/test", function() {
+    echo "test-page";
+});
+
+
+$match = $router->dispatch();
+
+echo "<pre>";
+var_dump($match);
+echo "</pre>";
+
+switch ($match["type"]) {
+    case "Closure":
+        $match["function"]();
+        break;
+    case "Controller":
+        $controller = new $match["controller"]();
+        if (is_null($match["parameter"])) {
+            $controller->$match["method"]();
+        } else {
+            $controller->$match["method"]($match["parameter"]);
+        }
+        break;
+    case "Error":
+        //Core\Routing\Redirect::to("/");
+        http_response_code(500);
+        echo "error";
+        break;
+}
