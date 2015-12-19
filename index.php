@@ -46,7 +46,8 @@ $router->addRoute("GET", "/", function() {
 });
 
 $router->addRoute("GET", "/test", function() {
-    echo "test-page";
+    $response = new Kuro\Core\Http\Response(201, "hello world!", ["test" => "232"]);
+    $response->send();
 });
 
 
