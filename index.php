@@ -1,7 +1,7 @@
 <?php
 define("__ROOT__", __DIR__ . "/");
 define("BASE_DIR", "http://" . dirname($_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF']));
-
+define("PROTOCOL", (isset($_SERVER["https"]) ? "https://" : "http://"));
 function classAutoload($class) {
     $class = implode("/", explode("\\", $class));
     require_once(__ROOT__ . $class . ".php");
@@ -31,10 +31,8 @@ set_exception_handler("exception_handler");
 
 
 use Kuro\Core\Routing\Router;
-
+var_dump(PROTOCOL);
 $router = new Router();
-
-$router->setBasePath(str_replace("http://" . $_SERVER['SERVER_NAME'], "", BASE_DIR));
 
 
 //Routing using closure

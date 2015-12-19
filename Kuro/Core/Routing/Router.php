@@ -3,6 +3,7 @@ namespace Kuro\Core\Routing;
 
 use Closure;
 use Kuro\Core\Http\Response;
+use Kuro\Core\Http\Request;
 
 /**
  * This router handles the main request routing for the framework. You can add
@@ -162,6 +163,8 @@ class Router
                     if (!method_exists($controllerName, $controllerMethod)) {
                         return ["type" => "error"];
                     }
+
+
                     
                     $returnArray["controller"] = $controllerName;
                     $returnArray["method"] = $controllerMethod;
@@ -187,27 +190,12 @@ class Router
     {
         
         //TODO: Create request object here
-
-        //Get the current request uri and method
-        $requestUrl = $_SERVER["REQUEST_URI"];
-        $requestMethod = $_SERVER["REQUEST_METHOD"];
+        $request = new Request($_SERVER["REQUEST_URI"], $_SERVER["REQUEST_METHOD"]);
+        var_dump($request->getUrl());
         
-        //Strip base path and query string from the request url
-        $requestUrl = rtrim(str_replace($this->basePath, "", $requestUrl), "/");
-        if(empty($requestUrl)) {
-            $requestUrl = "/";
-        }
-        
-        if ($strpos = strpos($requestUrl, "?") !== false) {
-            $requestUrl = substr($requestUrl, 0, $strpos);
-        }
         
         //TODO give the request object here
-        $response = $this->matchRequest($requestUrl, $requestMethod);
+        $response = $this->matchRequest($request->getUrl(), $request->getMethod());
         return $response;
-        //TODO: remove this piece of code...
-        //return ["type" => "Error"];
     }
-
-
 }
