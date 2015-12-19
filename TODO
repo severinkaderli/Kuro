@@ -1,8 +1,21 @@
 Framework:
   ☐ Adding a Core Folder/Namespace
+    It looks better that way :)
   ☐ Settings file
     Maybe using dot.env would be a good idea for this to ensure env
     independent settings. Default could still be set.
+  ☐ Think about how to handle the main bootstrapping in index.php
+    This could maybe done with an application class, which gets the
+    matched route from the server as input and then, execute it
+    Maybe somthing like app->run(); The current case statement should
+    be put in here.
+  ☐ Adding a class autoloader -> from php blog
+    I'm not sure where I should put the class loader exactly. Maybe that
+    could also be a part of the app class mentioned above.
+  ☐ Adding Framework constants, Version, Branch etc...
+    That should be definitily done in a kidn of init file that gets included
+    in the index file. Things like root and base path should also be in here
+
 Requests & Routing:
   ☐ Kuro\Core\Http\Request
     This should combine the $_GET and $_POST super globals and 'clean' them up
@@ -15,6 +28,22 @@ Requests & Routing:
   ☐ Update Kuro\Core\Routing\Router to newest code base
     I need to update this class with the newest changes I made for my school
     project. But I need to update it to php7 again, which is no big deal.
+  ☐ Add better parameter wildcard handling to the router
+    It should be possible to specific the type (int, string, maybe even
+    or ip) which the parameter must match. At the moment everything is
+    getting matched.
+  ☐ Adding a way to get URL to a specific route
+    This could either be something like Route::to or Url::to() not sure
+    at the moment.
+  ☐ Kuro\Core\Routing\Redirect
+    Copy this from php blog and update it to php7 syntax
+  ☐ Add 'simulating' for HTTP Methods like PATCH, PUT & DELETE
+    That way you are able to use it in forms and other requests. This ensures
+    a correct HTTP Api.
+  ☐ Add HTTP status handler
+    It should be possible to throw a http status code. Something like
+    Http::status(404); -> That should call the specific http_response_code
+    and print out some php -> <h1>404 - Page not found</h1>
 
 Sessions & Cookies:
   ☐ Kuro\Core\Session
@@ -39,6 +68,26 @@ Database:
       To get those both methods to work there should be one private? query
       method which executes the query. Maybe one method is enough and simple
       enough?
+  ☐ Kuro\Core\Database\Model
+    The base model class. Either it should get the properties from the database
+    or just map the ones that exists to the db result. The second way would be
+    way simpler without many magic methods.
+  ☐ ORM
+    That would be the next step when the model structure stands, but it will be
+    pretty difficult to implement. A query builder would maybe a good idea...
+
+Views:
+  ☐ Kuro\Core\View
+    The Main view class which handles the loading of the template files
+    and let the programmer assign variables to it. I can copy this
+    also from my php blog.
+  ☐ Adding a folder for the views
+    This folder should be somewhere in the root directory. Either called
+    Views/ or Templates/.
+  ☐ Implementing a simple templating engine
+    Variables should be printed out like this {{var}} or {{!var }} to escape
+    it. So it should work like in laravels engine. Not sure how about
+    implementing parsing of control strucutres and loops.
 
 Tests:
   ☐ Unit-Tests
@@ -47,3 +96,4 @@ Tests:
     ☐ Create test folder structure
     ☐ Read up a bit more about Mocking and other unit-testing stuff
     ☐ Writing the actual tests
+    ☐ Setting up travis-ci for auto-testing on commits
