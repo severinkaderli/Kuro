@@ -1,5 +1,5 @@
 Framework:
-  ☐ Adding a Core Folder/Namespace
+  ✔ Adding a Core Folder/Namespace @done (15-12-19 21:55)
     It looks better that way :)
   ☐ Settings file
     Maybe using dot.env would be a good idea for this to ensure env
@@ -9,7 +9,7 @@ Framework:
     matched route from the server as input and then, execute it
     Maybe somthing like app->run(); The current case statement should
     be put in here.
-  ☐ Adding a class autoloader -> from php blog
+  ✔ Adding a class autoloader -> from php blog @done (15-12-19 21:56)
     I'm not sure where I should put the class loader exactly. Maybe that
     could also be a part of the app class mentioned above.
   ☐ Adding Framework constants, Version, Branch etc...
@@ -17,21 +17,21 @@ Framework:
     in the index file. Things like root and base path should also be in here
 
 Requests & Routing:
-  ☐ Kuro\Core\Http\Request
+  ✔ Kuro\Core\Http\Request @done (15-12-19 21:55)
     This should combine the $_GET and $_POST super globals and 'clean' them up
     a bit. E.g. if magic quotes is on, strip slashes should be added. More
     cleaning up would be done later in the specfic model validators
-    ☐ Deciding if this class should be a global object or a static class
+    ✔ Deciding if this class should be a global object or a static class @done (15-12-19 21:55)
       $request->get("array-key") vs. Request::get("array-key"). The static
       approach looks nicer to me in the first moment. But i need to decide
       that sometimes. 
-  ☐ Update Kuro\Core\Routing\Router to newest code base
+  ✔ Update Kuro\Core\Routing\Router to newest code base @done (15-12-19 21:55)
     I need to update this class with the newest changes I made for my school
     project. But I need to update it to php7 again, which is no big deal.
   ☐ Add better parameter wildcard handling to the router
     It should be possible to specific the type (int, string, maybe even
     or ip) which the parameter must match. At the moment everything is
-    getting matched.
+    getting matched. It should also be possible to specify multiple parameters.
   ☐ Adding a way to get URL to a specific route
     This could either be something like Route::to or Url::to() not sure
     at the moment.
@@ -40,10 +40,13 @@ Requests & Routing:
   ☐ Add 'simulating' for HTTP Methods like PATCH, PUT & DELETE
     That way you are able to use it in forms and other requests. This ensures
     a correct HTTP Api.
-  ☐ Add HTTP status handler
+  ✔ Add HTTP status handler @done (15-12-19 21:55)
     It should be possible to throw a http status code. Something like
     Http::status(404); -> That should call the specific http_response_code
     and print out some php -> <h1>404 - Page not found</h1>
+  ✔ Adding support for / routes @done (15-12-19 21:55)
+    At the moment to root route only works if you give an empty string
+    
 
 Sessions & Cookies:
   ☐ Kuro\Core\Session
