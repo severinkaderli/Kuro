@@ -1,4 +1,4 @@
 # Kuro
-PHP-Framework with PHP7 support
+PHP-Framework PHP7 only.
 ##Features
 * Router 
