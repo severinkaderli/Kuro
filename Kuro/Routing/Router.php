@@ -1,5 +1,5 @@
 <?php
-namespace Kuro\Core\Routing;
+namespace Kuro\Routing;
 
 use Closure;
 
@@ -75,9 +75,9 @@ class Router
      *
      * @return \Kuro\Core\Http\Response
      */
-    public function dispatch(\Kuro\Core\Http\Request $request) : \Kuro\Core\Http\Response
+    public function dispatch(\Kuro\Http\Request $request) : \Kuro\Http\Response
     {
-        $response = new \Kuro\Core\Http\Response();
+        $response = new \Kuro\Http\Response();
 
         //Try to find a matching route
         foreach ($this->getRoutes() as $route) {

@@ -1,5 +1,5 @@
 <?php
-namespace Kuro\Core\Http;
+namespace Kuro\Http;
 
 /**
  * 

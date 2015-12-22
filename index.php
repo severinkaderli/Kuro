@@ -1,33 +1,9 @@
 <?php
-//Root path to the kuro directory -> /var/www/html/kuro
-define("__ROOT__", __DIR__ . "/");
 
-//Either http:// or https://
-define("PROTOCOL", (isset($_SERVER["https"]) ? "https://" : "http://"));
-
-//Url to the directory of kuro -> http://example.com/path/to/kuro
-define("BASE_URL", PROTOCOL . dirname($_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF']));
-
-//Url of the server -> http://example.com
-define("SERVER_URL", PROTOCOL . $_SERVER['SERVER_NAME']);
-
-//Only the path of Kuro -> /path/to/kuro
-define("BASE_PATH", str_replace(SERVER_URL, "", BASE_URL));
-
-function constDebug($name)
-{
-    echo $name . ": " . constant($name) . "<br>";
-}
-
-constDebug("BASE_PATH");
+require_once("./vendor/autoload.php");
+require_once("./init.php");
 
 
-
-function classAutoload($class) {
-    $class = implode("/", explode("\\", $class));
-    require_once(__ROOT__ . $class . ".php");
-}
-spl_autoload_register("classAutoload");
 //TODO: Put these error and exception handlers somewhere
 function exception_error_handler($severity, $message, $file, $line) {
     if (!(error_reporting() & $severity)) {
@@ -51,7 +27,7 @@ set_exception_handler("exception_handler");
 
 
 
-use Kuro\Core\Routing\Router;
+use Kuro\Routing\Router;
 var_dump(PROTOCOL);
 $router = new Router();
 
@@ -66,6 +42,6 @@ $router->addRoute("GET", "/test", function() {
 });
 
 
-$response = $router->dispatch(new Kuro\Core\Http\Request($_SERVER["REQUEST_URI"], $_SERVER["REQUEST_METHOD"]));
+$response = $router->dispatch(new Kuro\Http\Request($_SERVER["REQUEST_URI"], $_SERVER["REQUEST_METHOD"]));
 
 $response->send();

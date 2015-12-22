@@ -75,6 +75,11 @@ Database:
     The base model class. Either it should get the properties from the database
     or just map the ones that exists to the db result. The second way would be
     way simpler without many magic methods.
+  ☐ Query Builder
+    This ensures that all queries are consistent. Not quite sure how to
+    implement this at the moment. Maybe a Query-Object that gets given to
+    the Database->query() Method. This should be built upon the
+    DatabaseConnection class.
   ☐ ORM
     That would be the next step when the model structure stands, but it will be
     pretty difficult to implement. A query builder would maybe a good idea...
@@ -95,8 +100,9 @@ Views:
 Tests:
   ☐ Unit-Tests
     Create a way to tests the router -> Custom requests
-    ☐ Get phpunit to work with php7
-    ☐ Create test folder structure
+    ✔ Get phpunit to work with php7 @done (15-12-23 00:57)
+    ✔ Create test folder structure @done (15-12-23 00:57)
+    ☐ Fixing constants in tests -> $_SERVER["SERVER_NAME"] -> set this is phpunit.php
     ☐ Read up a bit more about Mocking and other unit-testing stuff
     ☐ Writing the actual tests
     ☐ Setting up travis-ci for auto-testing on commits
