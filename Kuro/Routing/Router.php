@@ -2,6 +2,8 @@
 namespace Kuro\Routing;
 
 use Closure;
+use Kuro\Routing\Exception\IllegalCallbackException;
+use Kuro\Routing\Exception\MethodNotAllowedException;
 
 /**
  * This router handles the main request routing for the framework. You can add
@@ -39,17 +41,15 @@ class Router
      * @param string $methods
      * @param string $route
      * @param callable $callback
-     *
+     * @throws Kuro\Routing\Exception\MethodNotAllowedException
      */
     public function addRoute(string $methods, string $route, callable $callback)
     {
         $methods = explode("|", $methods);
         
         foreach ($methods as $method) {
-            if (!in_array(strtoupper($method), $this->allowedMethods)) {
-                
-                //throw new MethodNotAllowedException($method);
-                
+            if (!in_array(strtoupper($method), $this->allowedMethods)) { 
+                throw new MethodNotAllowedException($method); 
             }
         }
         $this->routes[] = ["methods" => $methods, "route" => $route, "callback" => $callback];

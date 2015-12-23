@@ -2,7 +2,8 @@
 
 use Kuro\Http\Response;
 
-class ResponseTest extends PHPUnit_Framework_TestCase {
+class ResponseTest extends PHPUnit_Framework_TestCase
+{
 
 	public function testDefaultResponse()
     {

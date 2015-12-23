@@ -3,8 +3,7 @@
 require_once("./vendor/autoload.php");
 require_once("./init.php");
 
-var_dump(BASE_PATH);echo "<br>";
-
+var_dump(BASE_PATH);
 
 //TODO: Put these error and exception handlers somewhere
 function exception_error_handler($severity, $message, $file, $line) {
@@ -26,7 +25,6 @@ function exception_handler($exception) {
 }
 
 set_exception_handler("exception_handler");
-
 
 
 use Kuro\Routing\Router;
