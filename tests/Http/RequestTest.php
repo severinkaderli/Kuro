@@ -17,7 +17,7 @@ class RequestTest extends PHPUnit_Framework_TestCase {
     {
     	$request = new Request("/");
 
-   		$request->setUrl("/test");
+   		$request->setUrl("/subdir/kuro/test/");
    		$request->setMethod("PATCH");
    		$request->setHeader("test-header", 505);	
 

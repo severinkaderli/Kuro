@@ -83,6 +83,7 @@ class Response
 	 * Sends the response to the client.
 	 * 
 	 * @return void
+ 	 * @codeCoverageIgnore
 	 */
 	public function send()
 	{

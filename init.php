@@ -13,10 +13,3 @@ define("SERVER_URL", PROTOCOL . $_SERVER['SERVER_NAME']);
 
 //Only the path of Kuro -> /path/to/kuro
 define("BASE_PATH", str_replace(SERVER_URL, "", BASE_URL));
-
-function constDebug($name)
-{
-    echo $name . ": " . constant($name) . "<br>";
-}
-
-constDebug("BASE_PATH");

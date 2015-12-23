@@ -4,6 +4,5 @@
 //that I use in my code.
 $_SERVER["SERVER_NAME"] = "example.com";
 
-//Include the constants for the framework the classes.
-require_once("./init.php");
+define("BASE_PATH", "/subdir/kuro");
 require_once("./vendor/autoload.php");
