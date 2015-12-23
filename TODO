@@ -106,3 +106,6 @@ Tests:
     ☐ Read up a bit more about Mocking and other unit-testing stuff
     ☐ Writing the actual tests
     ☐ Setting up travis-ci for auto-testing on commits
+
+Travis-ci:
+  ☐ Adding continous integration
