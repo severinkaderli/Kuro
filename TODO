@@ -102,10 +102,10 @@ Tests:
     Create a way to tests the router -> Custom requests
     ✔ Get phpunit to work with php7 @done (15-12-23 00:57)
     ✔ Create test folder structure @done (15-12-23 00:57)
-    ☐ Fixing constants in tests -> $_SERVER["SERVER_NAME"] -> set this is phpunit.php
+    ✔ Fixing constants in tests -> $_SERVER["SERVER_NAME"] -> set this is phpunit.php @done (15-12-23 19:20)
     ☐ Read up a bit more about Mocking and other unit-testing stuff
     ☐ Writing the actual tests
     ☐ Setting up travis-ci for auto-testing on commits
 
 Travis-ci:
-  ☐ Adding continous integration
+  ✔ Adding continous integration @done (15-12-23 19:20)
