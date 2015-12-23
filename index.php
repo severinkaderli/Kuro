@@ -3,6 +3,8 @@
 require_once("./vendor/autoload.php");
 require_once("./init.php");
 
+var_dump($_SERVER["SERVER_NAME"]);echo "<br>";
+
 
 //TODO: Put these error and exception handlers somewhere
 function exception_error_handler($severity, $message, $file, $line) {

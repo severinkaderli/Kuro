@@ -81,15 +81,18 @@ class Request
 	 */
 	public function setUrl(string $url)
 	{
-
-		//We strip the base path from the request url, so we can match
-		//it with the routes.
-        $url = rtrim(str_replace(BASE_PATH, "", $url), "/");
-
-        //Remove the query string
-        if ($strpos = strpos($url, "?") !== false) {
+		//We remove the query string from the url because
+		//it is not needed for this framework
+		//Todo: Check how extra data for api calls are gonna be sent...
+        if (($strpos = strpos($url, "?")) !== false) {
             $url = substr($url, 0, $strpos);
         }
+
+        //We strip the base path from the request url, so we can match
+		//it with the routes. If there's an trailing slash at the end of
+		//an url it gets stripped, so we can ensure consistency through all
+		//urls.
+        $url = rtrim(str_replace(BASE_PATH, "", $url), "/");
 
         //If the url is empty it's the root route.
         if(empty($url)) {
@@ -114,13 +117,5 @@ class Request
 	public function setHeader(string $header, string $value)
 	{
 		$this->headers[$header] = $value; 
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getData() : array
-	{
-		return $this->data;
 	}
 }
