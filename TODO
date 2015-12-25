@@ -105,7 +105,8 @@ Tests:
     ✔ Fixing constants in tests -> $_SERVER["SERVER_NAME"] -> set this is phpunit.php @done (15-12-23 19:20)
     ☐ Read up a bit more about Mocking and other unit-testing stuff
     ☐ Writing the actual tests
-    ☐ Setting up travis-ci for auto-testing on commits
+    ☐ Setting up travis-ci for auto-testing on commit
+    ☐ Figure out how to test response sending etc.
 
 Travis-ci:
   ✔ Adding continous integration @done (15-12-23 19:20)
