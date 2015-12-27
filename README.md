@@ -2,6 +2,6 @@
 # Kuro
 Simple PHP-Framework for PHP7 build for personal use.
 ##Features
-* Routing
-* 
+* router
+* request classes
 * Completly Unit-Tested
