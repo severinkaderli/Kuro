@@ -3,5 +3,4 @@
 Simple PHP-Framework for PHP7 build for personal use.
 ##Features
 * router
-* request classes
 * Completly Unit-Tested
