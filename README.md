@@ -2,5 +2,9 @@
 # Kuro
 Simple PHP-Framework for PHP7 build for personal use.
 ##Features
-* Routing
+* Router
+  * Supports all important HTTP Methods.
+  * Multiple Methods per route definition are possible.
+  * Callback can be either a Controller-Method or a Closure.
+* 
 * Unit-Tested
