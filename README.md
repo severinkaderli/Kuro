@@ -6,5 +6,5 @@ Simple PHP-Framework for PHP7 build for personal use.
   * Supports all important HTTP Methods.
   * Multiple Methods per route definition are possible.
   * Callback can be either a Controller-Method or a Closure.
-* Coming: PSR7-Compatible MessageInterfaces
+* Coming: PSR7-Compatible MessageInterfaces for Request and Responses
 * Unit-Tested
