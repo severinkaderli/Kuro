@@ -7,6 +7,6 @@ Simple PHP-Framework for PHP7 build for personal use.
   * Multiple Methods per route definition are possible.
   * Callback can be either a Controller-Method or a Closure.
 * Todo:
-  * Redo the Request class. or create a external request class.
+  * The current Request and Response classes are more for internal routing uses. Maybe they should be called routeRequest and routeResponse. But a  HTTP Request class would be a good idea for a project. HttpRequest & HttpResponse. That could be used for api calls to an url using cUrl i.e.. Then I could make that Script a dependecy in Kuro, because it's something that I could for different projects.
 * Coming: DatabaseConnection & Model
 * Unit-Tested
